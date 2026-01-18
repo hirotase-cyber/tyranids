@@ -1,275 +1,310 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <title>Tyranids Point Calculator</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tyranids Army Builder</title>
 
-  <style>
-    :root {
-      --purple: #9c27b0;
-      --purple2: #7b1fa2;
-      --red: #d32f2f;
-    }
-
+<style>
     body {
-      font-family: system-ui, -apple-system, "Hiragino Sans", "Noto Sans JP", sans-serif;
-      margin: 0;
-      background: #fafafa;
-    }
-
-    .wrap {
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 24px 16px 40px;
+        font-family: "Segoe UI", sans-serif;
+        background: radial-gradient(circle at center, #2b0033, #0a000f 70%);
+        color: #e8d7ff;
+        margin: 0;
+        padding: 15px;
     }
 
     h1 {
-      margin: 8px 0 16px;
-      color: var(--purple2);
-      letter-spacing: 0.5px;
+        text-align: center;
+        color: #d400ff;
+        font-family: Impact, sans-serif;
+        font-size: 32px;
+        margin-bottom: 20px;
+        text-shadow: 0 0 10px #8a00c8, 0 0 20px #4b0066;
     }
 
-    .top {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-
-    .small {
-      font-size: 12px;
-      color: #666;
-    }
-
-    .card {
-      background: #fff;
-      border: 1px solid #eee;
-      border-radius: 14px;
-      padding: 16px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.05);
+    .container {
+        max-width: 480px;
+        margin: auto;
+        background: rgba(20, 0, 30, 0.85);
+        padding: 20px;
+        border-radius: 16px;
+        border: 3px solid #5a0066;
+        box-shadow: 0 0 20px #3a003f inset, 0 0 15px #000;
+        backdrop-filter: blur(4px);
     }
 
     label {
-      font-weight: 700;
-      display: block;
-      margin-bottom: 8px;
+        font-size: 16px;
+        font-weight: bold;
+        color: #f0d0ff;
     }
 
-    .row {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-
-    select {
-      flex: 1 1 280px;
-      padding: 10px 12px;
-      border-radius: 10px;
-      border: 1px solid #ddd;
-      font-size: 14px;
+    input, select {
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+        margin-top: 10px;
+        border-radius: 10px;
+        border: 2px solid #4a0055;
+        background: #1a001f;
+        color: #f5e1ff;
+        box-shadow: 0 0 8px #2d0040 inset;
     }
 
     button {
-      padding: 10px 14px;
-      border-radius: 10px;
-      border: 0;
-      cursor: pointer;
-      font-weight: 700;
-      font-size: 14px;
+        width: 100%;
+        padding: 14px;
+        font-size: 18px;
+        margin-top: 12px;
+        border: none;
+        border-radius: 10px;
+        color: white;
+        font-weight: bold;
+        letter-spacing: 1px;
+        text-shadow: 0 0 5px black;
     }
 
-    .btn-add {
-      background: var(--purple);
-      color: #fff;
+    .add-btn {
+        background: linear-gradient(180deg, #7a00a8, #4a0066);
+        box-shadow: 0 0 10px #7a00a8;
     }
 
-    .btn-del {
-      background: #eee;
+    .remove-btn {
+        background: linear-gradient(180deg, #444, #222);
+        box-shadow: 0 0 10px #333;
     }
 
-    .list {
-      margin-top: 14px;
-      border: 1px solid #eee;
-      border-radius: 12px;
-      overflow: auto;
-      min-height: 220px;
-      -webkit-overflow-scrolling: touch;
+    .clear-btn {
+        background: linear-gradient(180deg, #8a0011, #4a0008);
+        box-shadow: 0 0 12px #8a0011;
     }
 
-    .item {
-      display: flex;
-      justify-content: space-between;
-      padding: 10px 12px;
-      border-top: 1px solid #f1f1f1;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-      cursor: pointer;
+    #armyList {
+        margin-top: 20px;
+        border: 2px solid #3a0044;
+        padding: 10px;
+        min-height: 150px;
+        background: rgba(10, 0, 15, 0.8);
+        border-radius: 12px;
+        box-shadow: 0 0 15px #2a0033 inset;
     }
 
-    .item:first-child {
-      border-top: none;
+    .unit-item {
+        padding: 12px;
+        font-size: 16px;
+        border-bottom: 1px solid #2a0033;
+        color: #e8d7ff;
     }
 
-    .item.selected {
-      background: #f3e5f5;
+    .unit-item:last-child {
+        border-bottom: none;
     }
 
-    .total {
-      margin-top: 16px;
-      font-size: 20px;
-      font-weight: 800;
-      color: var(--red);
+    #total {
+        font-size: 26px;
+        font-weight: bold;
+        color: #ff4cff;
+        text-align: center;
+        margin-top: 20px;
+        text-shadow: 0 0 10px #ff4cff;
     }
 
-    .hint {
-      color: #666;
-      font-size: 12px;
-      margin-top: 10px;
-      line-height: 1.5;
+    #warning {
+        text-align: center;
+        color: #ff1744;
+        font-size: 18px;
+        margin-top: 10px;
+        display: none;
+        text-shadow: 0 0 8px #ff1744;
     }
-  </style>
+</style>
 </head>
 
 <body>
-  <div class="wrap">
-    <div class="top">
-      <h1>Hive Fleet Manager</h1>
-      <div class="small">Tyranids Point Calculator（HTML / iPhone対応）</div>
-    </div>
 
-    <div class="card">
-      <label for="unitSelect">バイオフォームを選択:</label>
-      <div class="row">
-        <select id="unitSelect"></select>
-        <button class="btn-add" id="addBtn">群れに加える</button>
-        <button class="btn-del" id="removeBtn">削除</button>
-      </div>
+<h1>Tyranids Army Builder</h1>
 
-      <div class="list" id="list"></div>
+<div class="container">
 
-      <div class="total" id="total">Total Points: 0</div>
+    <label>ユニット検索:</label>
+    <input type="text" id="searchBox" placeholder="例：ガント、ウォリアー…">
 
-      <div class="hint">
-        ・削除は、リストの行をタップして選択してから押してください。<br>
-        ・ポイントは改定されるため、公式の Munitorum Field Manual を随時確認してください。
-      </div>
-    </div>
-  </div>
+    <label>ユニットを選択:</label>
+    <select id="unitSelect"></select>
 
-  <script>
-    // Tyranids unit data
-    const TYRANIDS_DATA = {
-      "Termagants (10体)": 60,
-      "Hormagaunts (10体)": 70,
-      "Gargoyles (10体)": 80,
-      "Neurogaunts (11体)": 45,
-      "Genestealers (5体)": 75,
-      "Tyranid Warriors (Ranged/3体)": 70,
-      "Tyranid Warriors (Melee/3体)": 90,
-      "Hive Tyrant": 220,
-      "The Swarmlord": 250,
-      "Neurotyrant": 105,
-      "Old One Eye": 140,
-      "Deathleaper": 80,
-      "Exocrine": 135,
-      "Maleceptor": 165,
-      "Tyrannofex": 190,
-      "Screamer-Killer": 145,
-      "Carnifexes (1体)": 125,
-      "Zoanthropes (3体)": 90,
-      "Biovore (1体)": 40,
-      "Norn Emissary": 275,
-      "Norn Assimilator": 290
-    };
+    <button class="add-btn" onclick="addUnit()">群れに加える</button>
+    <button class="remove-btn" onclick="removeUnit()">選択したユニットを削除</button>
+    <button class="clear-btn" onclick="clearAll()">ALL CLEAR（全削除）</button>
 
-    const unitSelect = document.getElementById("unitSelect");
-    const addBtn = document.getElementById("addBtn");
-    const removeBtn = document.getElementById("removeBtn");
-    const listEl = document.getElementById("list");
-    const totalEl = document.getElementById("total");
+    <label style="margin-top:20px;">ポイント上限（例：2000）:</label>
+    <input type="number" id="limitInput" placeholder="上限なし">
 
-    const armyList = [];
-    let selectedIndex = -1;
+    <div id="armyList"></div>
 
-    function initSelect() {
-      const names = Object.keys(TYRANIDS_DATA).sort(function(a, b) {
-        return a.localeCompare(b, "ja");
-      });
-      for (let i = 0; i < names.length; i++) {
-        const opt = document.createElement("option");
-        opt.value = names[i];
-        opt.textContent = names[i];
-        unitSelect.appendChild(opt);
-      }
-    }
+    <div id="total">Total Points: 0</div>
+    <div id="warning">⚠ 上限を超えています</div>
 
-    function renderList() {
-      listEl.innerHTML = "";
-      for (let i = 0; i < armyList.length; i++) {
-        const item = armyList[i];
-        const row = document.createElement("div");
-        row.className = "item" + (i === selectedIndex ? " selected" : "");
-        row.innerHTML =
-          "<span>🦠 " + escapeHtml(item.name) + "</span>" +
-          "<span>" + item.pts + "pts</span>";
+</div>
 
-        row.addEventListener("click", function() {
-          selectedIndex = i;
-          renderList();
-        });
+<script>
+/* --- 全ユニット網羅版 TYRANIDS_DATA --- */
+const TYRANIDS_DATA = {
+    "ターマガント（10体）": 0,
+    "ホーマガント（10体）": 0,
+    "ガーゴイル（10体）": 0,
+    "ニューロガント（11体）": 0,
+    "ジーンスティーラー（5体）": 0,
 
-        listEl.appendChild(row);
-      }
-      updateTotal();
-    }
+    "ハイブタイラント": 0,
+    "ウィングド・ハイブタイラント": 0,
+    "スウォームロード": 0,
+    "ニューロタイラント": 0,
+    "ティラニッド・プライム": 0,
+    "ウィングド・ティラニッド・プライム": 0,
+    "パラサイト・オブ・モーテックス": 0,
+    "リクター": 0,
+    "リクター・スウォーム": 0,
+    "デスリーパー": 0,
+    "オールド・ワン・アイ": 0,
 
-    function updateTotal() {
-      let total = 0;
-      for (let i = 0; i < armyList.length; i++) {
-        total += armyList[i].pts;
-      }
-      totalEl.textContent = "Total Points: " + total;
-    }
+    "ティラニッド・ウォリアー（射撃・3体）": 0,
+    "ティラニッド・ウォリアー（近接・3体）": 0,
+    "ヴェノムスロープ（3体）": 0,
+    "ゾアントロープ（3体）": 0,
+    "ラヴェナー（3体）": 0,
 
-    function addUnit() {
-      const name = unitSelect.value;
-      const pts = TYRANIDS_DATA[name];
-      armyList.push({ name: name, pts: pts });
-      selectedIndex = armyList.length - 1;
-      renderList();
-    }
+    "スクリーマー・キラー": 0,
+    "カーニフェックス（1体）": 0,
+    "エクソクリン": 0,
+    "マレセプター": 0,
+    "ティラノフェックス": 0,
+    "ノーン・エミッサリー": 0,
+    "ノーン・アシミレーター": 0,
+    "クローン・モーフ": 0,
+    "ハーピー": 0,
+    "ハイブクローラー": 0,
+    "バロール": 0,
 
-    function removeUnit() {
-      if (selectedIndex < 0 || selectedIndex >= armyList.length) {
-        alert("削除するユニットをリストから選んでください");
-        return;
-      }
-      armyList.splice(selectedIndex, 1);
-      if (selectedIndex >= armyList.length) {
-        selectedIndex = armyList.length - 1;
-      }
-      renderList();
-    }
+    "バイオヴォア（1体）": 0,
+    "プライロヴォア": 0,
+    "スポアマイン（3体）": 0,
+    "ミューカリッド・スポア": 0
+};
 
-    // iOS Safari 対応版（replaceAll 不使用）
-    function escapeHtml(str) {
-      return String(str)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-    }
+const unitSelect = document.getElementById("unitSelect");
+const searchBox = document.getElementById("searchBox");
+const armyList = document.getElementById("armyList");
+const totalDisplay = document.getElementById("total");
+const limitInput = document.getElementById("limitInput");
+const warning = document.getElementById("warning");
 
-    initSelect();
+let army = [];
+let selectedIndex = -1;
+
+/* --- 初期化 --- */
+function init() {
+    loadArmy();
+    renderUnitOptions();
     renderList();
+}
+init();
 
-    addBtn.addEventListener("click", addUnit);
-    removeBtn.addEventListener("click", removeUnit);
-  </script>
+/* --- 検索バー --- */
+searchBox.addEventListener("input", renderUnitOptions);
+
+/* --- ユニット一覧を検索して表示 --- */
+function renderUnitOptions() {
+    const keyword = searchBox.value.toLowerCase();
+    unitSelect.innerHTML = "";
+
+    Object.keys(TYRANIDS_DATA)
+        .filter(name => name.toLowerCase().includes(keyword))
+        .forEach(name => {
+            const option = document.createElement("option");
+            option.value = name;
+            option.textContent = name;
+            unitSelect.appendChild(option);
+        });
+}
+
+/* --- ユニット追加 --- */
+function addUnit() {
+    const name = unitSelect.value;
+    const pts = TYRANIDS_DATA[name];
+    if (!name) return;
+    army.push({ name, pts });
+    saveArmy();
+    renderList();
+}
+
+/* --- ユニット削除 --- */
+function removeUnit() {
+    if (selectedIndex < 0) return;
+    army.splice(selectedIndex, 1);
+    selectedIndex = -1;
+    saveArmy();
+    renderList();
+}
+
+/* --- 全削除（確認付き） --- */
+function clearAll() {
+    if (!army.length) return;
+    const ok = confirm("本当にすべてのユニットを削除しますか？");
+    if (!ok) return;
+    army = [];
+    selectedIndex = -1;
+    saveArmy();
+    renderList();
+}
+
+/* --- リスト描画 --- */
+function renderList() {
+    armyList.innerHTML = "";
+    army.forEach((unit, index) => {
+        const div = document.createElement("div");
+        div.className = "unit-item";
+        div.textContent = `${unit.name} --- ${unit.pts}pts`;
+        div.onclick = () => {
+            selectedIndex = index;
+            highlightSelection();
+        };
+        armyList.appendChild(div);
+    });
+    updateTotal();
+}
+
+/* --- 選択中の行をハイライト --- */
+function highlightSelection() {
+    [...armyList.children].forEach((child, idx) => {
+        child.style.background = idx === selectedIndex ? "#4a0033" : "transparent";
+    });
+}
+
+/* --- 合計ポイント更新 --- */
+function updateTotal() {
+    const total = army.reduce((sum, u) => sum + u.pts, 0);
+    totalDisplay.textContent = `Total Points: ${total}`;
+
+    const limit = Number(limitInput.value);
+    if (limit && total > limit) {
+        warning.style.display = "block";
+    } else {
+        warning.style.display = "none";
+    }
+}
+
+/* --- 保存 --- */
+function saveArmy() {
+    localStorage.setItem("tyranid_army", JSON.stringify(army));
+}
+
+/* --- 読み込み --- */
+function loadArmy() {
+    const saved = localStorage.getItem("tyranid_army");
+    if (saved) army = JSON.parse(saved);
+}
+</script>
+
 </body>
 </html>

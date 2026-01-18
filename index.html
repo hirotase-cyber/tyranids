@@ -8,36 +8,34 @@
 <style>
     body {
         font-family: "Segoe UI", sans-serif;
-        background: radial-gradient(circle at center, #2b0033, #0a000f 70%);
-        color: #e8d7ff;
+        background: linear-gradient(180deg, #1a1a1a, #2b0000);
+        color: #f5f5f5;
         margin: 0;
         padding: 15px;
     }
 
     h1 {
         text-align: center;
-        color: #d400ff;
+        color: #ff1744;
         font-family: Impact, sans-serif;
-        font-size: 32px;
+        font-size: 30px;
         margin-bottom: 20px;
-        text-shadow: 0 0 10px #8a00c8, 0 0 20px #4b0066;
+        text-shadow: 2px 2px 4px black;
     }
 
     .container {
         max-width: 480px;
         margin: auto;
-        background: rgba(20, 0, 30, 0.85);
+        background: #1e1e1e;
         padding: 20px;
-        border-radius: 16px;
-        border: 3px solid #5a0066;
-        box-shadow: 0 0 20px #3a003f inset, 0 0 15px #000;
-        backdrop-filter: blur(4px);
+        border-radius: 12px;
+        border: 2px solid #880e4f;
+        box-shadow: 0 0 10px #000;
     }
 
     label {
         font-size: 16px;
         font-weight: bold;
-        color: #f0d0ff;
     }
 
     input, select {
@@ -45,11 +43,10 @@
         padding: 12px;
         font-size: 16px;
         margin-top: 10px;
-        border-radius: 10px;
-        border: 2px solid #4a0055;
-        background: #1a001f;
-        color: #f5e1ff;
-        box-shadow: 0 0 8px #2d0040 inset;
+        border-radius: 8px;
+        border: 1px solid #555;
+        background: #2a2a2a;
+        color: #fff;
     }
 
     button {
@@ -58,43 +55,37 @@
         font-size: 18px;
         margin-top: 12px;
         border: none;
-        border-radius: 10px;
+        border-radius: 8px;
         color: white;
-        font-weight: bold;
-        letter-spacing: 1px;
-        text-shadow: 0 0 5px black;
     }
 
     .add-btn {
-        background: linear-gradient(180deg, #7a00a8, #4a0066);
-        box-shadow: 0 0 10px #7a00a8;
+        background: #c2185b;
     }
 
     .remove-btn {
-        background: linear-gradient(180deg, #444, #222);
-        box-shadow: 0 0 10px #333;
+        background: #616161;
     }
 
     .clear-btn {
-        background: linear-gradient(180deg, #8a0011, #4a0008);
-        box-shadow: 0 0 12px #8a0011;
+        background: #b71c1c;
+        color: white;
+        margin-top: 12px;
     }
 
     #armyList {
         margin-top: 20px;
-        border: 2px solid #3a0044;
+        border: 1px solid #444;
         padding: 10px;
         min-height: 150px;
-        background: rgba(10, 0, 15, 0.8);
-        border-radius: 12px;
-        box-shadow: 0 0 15px #2a0033 inset;
+        background: #121212;
+        border-radius: 8px;
     }
 
     .unit-item {
         padding: 12px;
         font-size: 16px;
-        border-bottom: 1px solid #2a0033;
-        color: #e8d7ff;
+        border-bottom: 1px solid #333;
     }
 
     .unit-item:last-child {
@@ -102,12 +93,11 @@
     }
 
     #total {
-        font-size: 26px;
+        font-size: 24px;
         font-weight: bold;
-        color: #ff4cff;
+        color: #ff5252;
         text-align: center;
         margin-top: 20px;
-        text-shadow: 0 0 10px #ff4cff;
     }
 
     #warning {
@@ -116,7 +106,6 @@
         font-size: 18px;
         margin-top: 10px;
         display: none;
-        text-shadow: 0 0 8px #ff1744;
     }
 </style>
 </head>
@@ -148,48 +137,28 @@
 </div>
 
 <script>
-/* --- 全ユニット網羅版 TYRANIDS_DATA --- */
 const TYRANIDS_DATA = {
-    "ターマガント（10体）": 0,
-    "ホーマガント（10体）": 0,
-    "ガーゴイル（10体）": 0,
-    "ニューロガント（11体）": 0,
-    "ジーンスティーラー（5体）": 0,
-
-    "ハイブタイラント": 0,
-    "ウィングド・ハイブタイラント": 0,
-    "スウォームロード": 0,
-    "ニューロタイラント": 0,
-    "ティラニッド・プライム": 0,
-    "ウィングド・ティラニッド・プライム": 0,
-    "パラサイト・オブ・モーテックス": 0,
-    "リクター": 0,
-    "リクター・スウォーム": 0,
-    "デスリーパー": 0,
-    "オールド・ワン・アイ": 0,
-
-    "ティラニッド・ウォリアー（射撃・3体）": 0,
-    "ティラニッド・ウォリアー（近接・3体）": 0,
-    "ヴェノムスロープ（3体）": 0,
-    "ゾアントロープ（3体）": 0,
-    "ラヴェナー（3体）": 0,
-
-    "スクリーマー・キラー": 0,
-    "カーニフェックス（1体）": 0,
-    "エクソクリン": 0,
-    "マレセプター": 0,
-    "ティラノフェックス": 0,
-    "ノーン・エミッサリー": 0,
-    "ノーン・アシミレーター": 0,
-    "クローン・モーフ": 0,
-    "ハーピー": 0,
-    "ハイブクローラー": 0,
-    "バロール": 0,
-
-    "バイオヴォア（1体）": 0,
-    "プライロヴォア": 0,
-    "スポアマイン（3体）": 0,
-    "ミューカリッド・スポア": 0
+    "ターマガント（10体）": 60,
+    "ホーマガント（10体）": 70,
+    "ガーゴイル（10体）": 80,
+    "ニューロガント（11体）": 45,
+    "ジーンスティーラー（5体）": 75,
+    "ティラニッド・ウォリアー（射撃・3体）": 70,
+    "ティラニッド・ウォリアー（近接・3体）": 90,
+    "ハイブタイラント": 220,
+    "スウォームロード": 250,
+    "ニューロタイラント": 105,
+    "オールド・ワン・アイ": 140,
+    "デスリーパー": 80,
+    "エクソクリン": 135,
+    "マレセプター": 165,
+    "ティラノフェックス": 190,
+    "スクリーマー・キラー": 145,
+    "カーニフェックス（1体）": 125,
+    "ゾアントロープ（3体）": 90,
+    "バイオヴォア（1体）": 40,
+    "ノーン・エミッサリー": 275,
+    "ノーン・アシミレーター": 290
 };
 
 const unitSelect = document.getElementById("unitSelect");
@@ -202,7 +171,7 @@ const warning = document.getElementById("warning");
 let army = [];
 let selectedIndex = -1;
 
-/* --- 初期化 --- */
+// 初期化
 function init() {
     loadArmy();
     renderUnitOptions();
@@ -210,10 +179,10 @@ function init() {
 }
 init();
 
-/* --- 検索バー --- */
+// 検索バー
 searchBox.addEventListener("input", renderUnitOptions);
 
-/* --- ユニット一覧を検索して表示 --- */
+// ユニット一覧を検索して表示
 function renderUnitOptions() {
     const keyword = searchBox.value.toLowerCase();
     unitSelect.innerHTML = "";
@@ -228,7 +197,7 @@ function renderUnitOptions() {
         });
 }
 
-/* --- ユニット追加 --- */
+// ユニット追加
 function addUnit() {
     const name = unitSelect.value;
     const pts = TYRANIDS_DATA[name];
@@ -238,7 +207,7 @@ function addUnit() {
     renderList();
 }
 
-/* --- ユニット削除 --- */
+// ユニット削除
 function removeUnit() {
     if (selectedIndex < 0) return;
     army.splice(selectedIndex, 1);
@@ -247,7 +216,7 @@ function removeUnit() {
     renderList();
 }
 
-/* --- 全削除（確認付き） --- */
+// 全削除（確認ダイアログ付き）
 function clearAll() {
     if (!army.length) return;
     const ok = confirm("本当にすべてのユニットを削除しますか？");
@@ -258,7 +227,7 @@ function clearAll() {
     renderList();
 }
 
-/* --- リスト描画 --- */
+// リスト描画
 function renderList() {
     armyList.innerHTML = "";
     army.forEach((unit, index) => {
@@ -274,14 +243,14 @@ function renderList() {
     updateTotal();
 }
 
-/* --- 選択中の行をハイライト --- */
+// 選択中の行をハイライト
 function highlightSelection() {
     [...armyList.children].forEach((child, idx) => {
         child.style.background = idx === selectedIndex ? "#4a0033" : "transparent";
     });
 }
 
-/* --- 合計ポイント更新 --- */
+// 合計ポイント更新
 function updateTotal() {
     const total = army.reduce((sum, u) => sum + u.pts, 0);
     totalDisplay.textContent = `Total Points: ${total}`;
@@ -294,12 +263,12 @@ function updateTotal() {
     }
 }
 
-/* --- 保存 --- */
+// 保存
 function saveArmy() {
     localStorage.setItem("tyranid_army", JSON.stringify(army));
 }
 
-/* --- 読み込み --- */
+// 読み込み
 function loadArmy() {
     const saved = localStorage.getItem("tyranid_army");
     if (saved) army = JSON.parse(saved);
